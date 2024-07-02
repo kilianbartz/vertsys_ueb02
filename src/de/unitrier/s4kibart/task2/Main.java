@@ -1,11 +1,8 @@
-package de.unitrier.s4kibart;
+package de.unitrier.s4kibart.task2;
 
-import org.oxoo2a.sim4da.Message;
-import org.oxoo2a.sim4da.Node;
 import org.oxoo2a.sim4da.Simulator;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class Main {
 

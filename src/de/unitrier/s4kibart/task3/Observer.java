@@ -1,4 +1,4 @@
-package de.unitrier.s4kibart;
+package de.unitrier.s4kibart.task3;
 
 import org.oxoo2a.sim4da.Message;
 import org.oxoo2a.sim4da.Node;
@@ -10,6 +10,7 @@ public class Observer extends Node {
     private boolean terminated = false;
 
     private Pair couldBeTerminated(){
+        System.out.println("Starting Observer query...");
         for (String participant : participants) {
             sendBlindly(m, participant);
         }
@@ -20,6 +21,8 @@ public class Observer extends Node {
             noMessagesSent += answer.queryInteger("noSent");
             noMessagesReceived += answer.queryInteger("noReceived");
         }
+        System.out.println("Result of Observer Queries: noSent" + noMessagesSent);
+        System.out.println("Result of Observer Queries: noReceived" + noMessagesReceived);
         return new Pair(noMessagesSent, noMessagesReceived);
     }
 
@@ -27,6 +30,7 @@ public class Observer extends Node {
         super(name);
         m = new Message();
         m.addHeader("type", "observer_message");
+        m.add("command", "query");
         this.participants = participants;
     }
 
@@ -45,10 +49,21 @@ public class Observer extends Node {
             }
             if (lastWave != null && firstWave.getFirst() == lastWave.getSecond())
                 terminated = true;
-            else
-                lastWave = firstWave;
+            else {
+                try {
+                    lastWave = firstWave;
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
         System.out.println("Verteiltes System ist terminiert.");
-        System.exit(0);
+        Message stopMessage = new Message();
+        stopMessage.addHeader("type", "observer_message");
+        stopMessage.add("command", "stop");
+        for (String participant : participants) {
+            sendBlindly(stopMessage, participant);
+        }
     }
 }

@@ -1,4 +1,4 @@
-package de.unitrier.s4kibart;
+package de.unitrier.s4kibart.task3;
 
 import org.oxoo2a.sim4da.Message;
 import org.oxoo2a.sim4da.Node;
@@ -11,6 +11,8 @@ public class Actor extends Node {
     Random rand = new Random();
     private float p = 1.f;
     private final String name;
+    private int noSent = 0;
+    private int noReceived = 0;
 
     private void shuffleParticipants(){
         for (int i = otherParticipants.length-1; i > 0; i--){
@@ -27,6 +29,7 @@ public class Actor extends Node {
         for (int i = 0; i < toIndex; i++) {
             sendBlindly(m, otherParticipants[i]);
         }
+        noSent += toIndex;
     }
 
     public Actor(String name) {
@@ -52,16 +55,29 @@ public class Actor extends Node {
         }
         active = false;
         while (true){
-            m = receive();
-            if (m.queryInteger("Firework") == 1){
-                active = true;
-            }
-            if (active){
-                if (rand.nextFloat() < p){
-                    sendMessageToRandomSubset(m);
+            Message rec = receive();
+            if (rec.queryHeader("type").equals("normal_message")){
+                noReceived++;
+                if (rec.queryInteger("Firework") == 1){
+                    active = true;
                 }
-                p = p / 2;
-                active = false;
+                if (active){
+                    if (rand.nextFloat() < p){
+                        sendMessageToRandomSubset(m);
+                    }
+                    p = p / 2;
+                    active = false;
+                }
+            } else if (rec.queryHeader("type").equals("observer_message")) {
+                Message answer = new Message();
+                if (rec.query("command").equals("query")){
+                    answer.add("noSent", noSent);
+                    answer.add("noReceived", noReceived);
+                    sendBlindly(answer, rec.queryHeader("sender"));
+                } else if (rec.query("command").equals("stop")){
+                    break;
+                    // Observer hat Terminierung festgestellt --> stoppe
+                }
             }
         }
     }

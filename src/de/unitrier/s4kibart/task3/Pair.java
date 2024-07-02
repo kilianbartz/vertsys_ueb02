@@ -1,4 +1,4 @@
-package de.unitrier.s4kibart;
+package de.unitrier.s4kibart.task3;
 
 public class Pair {
     private int first;
