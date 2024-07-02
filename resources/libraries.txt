@@ -1,0 +1,4 @@
+ch.qos.logback.classic (latest)
+fasterxml.jackson.core (2.13.3)
+fasterxml.jackson.core.annotations (2.13.3)
+fasterxml.jackson.core.databind (2.13.3)
