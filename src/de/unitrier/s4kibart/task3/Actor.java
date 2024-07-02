@@ -26,6 +26,7 @@ public class Actor extends Node {
     private void sendMessageToRandomSubset(Message m){
         shuffleParticipants();
         int toIndex = rand.nextInt(otherParticipants.length);
+        System.out.println("Node " + name + "sends Message to " + toIndex + " other nodes.");
         for (int i = 0; i < toIndex; i++) {
             sendBlindly(m, otherParticipants[i]);
         }
@@ -62,7 +63,8 @@ public class Actor extends Node {
                     active = true;
                 }
                 if (active){
-                    if (rand.nextFloat() < p){
+                    float sendMsg = rand.nextFloat();
+                    if (sendMsg < p){
                         sendMessageToRandomSubset(m);
                     }
                     p = p / 2;
