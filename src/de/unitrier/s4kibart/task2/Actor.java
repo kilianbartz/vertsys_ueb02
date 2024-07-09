@@ -1,8 +1,12 @@
 package de.unitrier.s4kibart.task2;
 
 import org.oxoo2a.sim4da.Message;
+import org.oxoo2a.sim4da.Network;
 import org.oxoo2a.sim4da.Node;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Actor extends Node {
@@ -11,6 +15,7 @@ public class Actor extends Node {
     Random rand = new Random();
     private float p = 1.f;
     private final String name;
+    private Logger logger = LoggerFactory.getLogger(Network.class);
 
     private void shuffleParticipants(){
         for (int i = otherParticipants.length-1; i > 0; i--){
@@ -32,6 +37,7 @@ public class Actor extends Node {
     public Actor(String name) {
         super(name);
         this.name = name;
+        rand.setSeed(name.hashCode());
     }
     public String getName(){
         return name;
@@ -43,7 +49,7 @@ public class Actor extends Node {
     protected void engage(){
         Message m = new Message().add("Firework", 1);
         m.addHeader("type", "normal_message");
-        int waitTime = (int) (Math.random()*4000);
+        int waitTime = (int) (4000*rand.nextFloat());
         try {
             Thread.sleep(waitTime);
             sendMessageToRandomSubset(m);

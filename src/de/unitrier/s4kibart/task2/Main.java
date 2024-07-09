@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) {
-        final int numParticipants = 10;
+        final int numParticipants = 1000;
         Simulator sim = Simulator.getInstance();
         Actor[] actors = new Actor[numParticipants];
         ArrayList<String> nodeNames = new ArrayList<>();
