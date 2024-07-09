@@ -26,7 +26,6 @@ public class Actor extends Node {
     private void sendMessageToRandomSubset(Message m){
         shuffleParticipants();
         int toIndex = rand.nextInt(otherParticipants.length);
-        System.out.println("Node " + name + "sends Message to " + toIndex + " other nodes.");
         for (int i = 0; i < toIndex; i++) {
             sendBlindly(m, otherParticipants[i]);
         }
@@ -36,6 +35,7 @@ public class Actor extends Node {
     public Actor(String name) {
         super(name);
         this.name = name;
+        rand.setSeed(name.hashCode());
     }
     public String getName(){
         return name;
@@ -47,7 +47,7 @@ public class Actor extends Node {
     protected void engage(){
         Message m = new Message().add("Firework", 1);
         m.addHeader("type", "normal_message");
-        int waitTime = (int) (Math.random()*4000);
+        int waitTime = (int) (rand.nextFloat()*4000);
         try {
             Thread.sleep(waitTime);
             sendMessageToRandomSubset(m);
@@ -71,6 +71,7 @@ public class Actor extends Node {
                     active = false;
                 }
             } else if (rec.queryHeader("type").equals("observer_message")) {
+                // No need to check that the actor is passive because it is always passive at the time he receives a message
                 Message answer = new Message();
                 if (rec.query("command").equals("query")){
                     answer.add("noSent", noSent);

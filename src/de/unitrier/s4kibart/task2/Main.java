@@ -29,7 +29,16 @@ public class Main {
             }
             actors[i].setOtherParticipants(otherParticipants);
         }
-        sim.simulate(6);
+        new Thread(() -> {
+            try {
+                Thread.sleep(20*1000); // Sleep for 4 seconds
+                System.out.println("Terminating the program.");
+                System.exit(0); // Terminate the program
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
+        sim.simulate(20);
         sim.shutdown();
         System.exit(0);
         // dadurch, dass die Aktorenthreads alle in einer Endlosschleife sind, können sie nicht gejoint werden und das Programm terminiert nicht regulär

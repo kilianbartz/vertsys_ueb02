@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class CountOcc {
     public static void main(String[] args) {
-        String fileName = "C:\\Users\\s4kibart\\IdeaProjects\\vertsys_ueb02\\1000_6sek.log";
+        String fileName = "C:\\Users\\s4kibart\\IdeaProjects\\vertsys_ueb02\\a.log";
         int sendingCount = 0;
         int receivedCount = 0;
 

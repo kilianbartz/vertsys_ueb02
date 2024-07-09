@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) {
-        final int numParticipants = 10;
+        final int numParticipants = 1000;
         Simulator sim = Simulator.getInstance();
         Actor[] actors = new Actor[numParticipants];
         ArrayList<String> nodeNames = new ArrayList<>();
@@ -31,9 +31,7 @@ public class Main {
         }
         String[] allNames = nodeNames.toArray(new String[nodeNames.size()]);
         Observer observer = new Observer("Observer", allNames);
-        sim.simulate(20);
+        sim.simulate();
         sim.shutdown();
-        System.exit(0);
-        // dadurch, dass die Aktorenthreads alle in einer Endlosschleife sind, können sie nicht gejoint werden und das Programm terminiert nicht regulär
-    }
+        }
 }
